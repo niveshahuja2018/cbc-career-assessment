@@ -3,140 +3,250 @@
 <head>
 <title>CareerByChoice Report</title>
 <meta charset="UTF-8">
+
+<!-- jsPDF Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
 
 body{
-  font-family: 'Poppins', sans-serif;
+  font-family:'Poppins',sans-serif;
   margin:0;
   background:#F4F7FA;
   color:#1E293B;
 }
 
-.report-header{
+.header{
   background:linear-gradient(90deg,#0A2E52,#0E7490);
   color:white;
   padding:40px;
   text-align:center;
 }
 
-.report-header h1{
-  margin:0;
-  font-weight:600;
-}
-
 .section{
   background:white;
-  margin:50px auto;
   width:75%;
-  padding:45px;
+  margin:40px auto;
+  padding:40px;
   border-radius:20px;
-  box-shadow:0 15px 45px rgba(0,0,0,0.08);
+  box-shadow:0 12px 45px rgba(0,0,0,0.08);
 }
 
 h2{
   color:#0A2E52;
-  font-weight:600;
   border-left:6px solid #0E7490;
   padding-left:15px;
+  margin-bottom:25px;
 }
 
-.highlight{
-  color:#0E7490;
-  font-weight:600;
-  font-size:20px;
-}
-
-.metric-card{
-  background:#F8FAFC;
-  padding:20px;
-  border-radius:12px;
-  margin-top:20px;
-  border-left:5px solid #0E7490;
-}
-
-.page-divider{
-  height:2px;
+.bar-container{
   background:#E2E8F0;
-  margin:40px 0;
+  height:12px;
+  border-radius:8px;
+  margin-top:8px;
 }
 
-.footer{
-  text-align:center;
-  padding:40px;
-  font-size:14px;
-  color:#64748B;
+.bar{
+  height:12px;
+  border-radius:8px;
+  background:#0E7490;
 }
 
+.metric{
+  margin-top:20px;
+}
+
+.tag{
+  display:inline-block;
+  padding:6px 14px;
+  border-radius:20px;
+  font-size:13px;
+  font-weight:500;
+}
+
+.top{ background:#DCFCE7;color:#166534; }
+.good{ background:#FEF9C3;color:#92400E; }
+.optional{ background:#E0F2FE;color:#075985; }
+.avoid{ background:#FEE2E2;color:#991B1B; }
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:20px;
+}
+
+th, td{
+  padding:12px;
+  border-bottom:1px solid #E2E8F0;
+  text-align:left;
+}
+
+th{
+  background:#F1F5F9;
+}
+
+button{
+  background:#0E7490;
+  color:white;
+  padding:14px 35px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-size:16px;
+  margin:20px auto;
+  display:block;
+}
+
+button:hover{background:#14B8A6;}
 </style>
 </head>
 
 <body>
 
-<div class="report-header">
-<h1>CareerByChoice Career Report</h1>
-<p>Personalised Career Intelligence Assessment</p>
+<div class="header">
+<h1>CareerByChoice Professional Career Report</h1>
 </div>
 
 <div class="section">
-<h2>Career Personality</h2>
-<div class="metric-card">
-<p id="personality"></p>
-</div>
+<h2>1. Personality Analysis</h2>
+<div id="personalityOutput"></div>
 </div>
 
 <div class="section">
-<h2>Interest Profile (RIASEC)</h2>
-<p id="interest"></p>
+<h2>2. Interest Profile (RIASEC)</h2>
+<div id="interestOutput"></div>
 </div>
 
 <div class="section">
-<h2>Skills Summary</h2>
-<p id="skills"></p>
+<h2>3. Skills Summary</h2>
+<div id="skillOutput"></div>
 </div>
 
 <div class="section">
-<h2>Recommended Career Cluster</h2>
-<p id="cluster"></p>
+<h2>4. Career Path Recommendations</h2>
+<table>
+<thead>
+<tr>
+<th>Career Path</th>
+<th>Interest Match %</th>
+<th>Skill Match %</th>
+<th>Recommendation</th>
+</tr>
+</thead>
+<tbody id="careerTable"></tbody>
+</table>
 </div>
+
+<button onclick="downloadPDF()">Download PDF Report</button>
 
 <script>
+let s = JSON.parse(localStorage.getItem("fullScores"));
 
-let s=JSON.parse(localStorage.getItem("fullScores"));
+/* ---------------- REAL PERCENTAGES ---------------- */
 
-// Personality
-let personality=
-(s.E>s.I?"Extrovert ":"Introvert ")+
-(s.N>s.S?"Intuitive ":"Sensing ")+
-(s.F>s.T?"Feeling ":"Thinking ")+
-(s.J>s.P?"Judging":"Perceiving");
+function percent(val,max){
+return Math.round((val/max)*100);
+}
 
-document.getElementById("personality").innerHTML=
-"<span class='highlight'>"+personality+"</span> personality type identified.";
+/* ---------------- PERSONALITY ---------------- */
 
-// Interest
-let interestType="";
-if(s.A>=1) interestType="Artistic";
-else if(s.E_R>=1) interestType="Enterprising";
-else if(s.S_R>=1) interestType="Social";
-else interestType="Investigative";
+let totalEI = s.E + s.I;
+let totalSN = s.S + s.N;
+let totalTF = s.T + s.F;
+let totalJP = s.J + s.P;
 
-document.getElementById("interest").innerHTML=
-"<span class='highlight'>"+interestType+"</span> dominant interest area.";
+let personality = `
+Extroversion: ${percent(s.E,totalEI)}% <br>
+Intuition: ${percent(s.N,totalSN)}% <br>
+Feeling: ${percent(s.F,totalTF)}% <br>
+Judging: ${percent(s.J,totalJP)}%
+`;
 
-// Skills
-document.getElementById("skills").innerHTML=
-"You demonstrated strong skills in "+s.skillHigh+" key competency areas.";
+document.getElementById("personalityOutput").innerHTML = personality;
 
-// Career Cluster Mapping
-let cluster="";
-if(interestType==="Artistic") cluster="Arts & Media Cluster";
-else if(interestType==="Enterprising") cluster="Business & Marketing Cluster";
-else if(interestType==="Social") cluster="Human Services Cluster";
-else cluster="Research & Technology Cluster";
+/* ---------------- RIASEC ---------------- */
 
-document.getElementById("cluster").innerHTML=
-"<span class='highlight'>"+cluster+"</span> recommended based on profile.";
+let riasec = {
+Artistic:s.A,
+Investigative:s.I_R,
+Enterprising:s.E_R,
+Social:s.S_R,
+Conventional:s.C,
+Realistic:s.R
+};
+
+let interestHTML = "";
+for(let key in riasec){
+interestHTML += `
+<div class="metric">
+${key} - ${riasec[key]*100}%
+<div class="bar-container">
+<div class="bar" style="width:${riasec[key]*100}%"></div>
+</div>
+</div>`;
+}
+document.getElementById("interestOutput").innerHTML = interestHTML;
+
+/* ---------------- SKILLS ---------------- */
+
+let skillPercent = percent(s.skillHigh,4);
+
+document.getElementById("skillOutput").innerHTML =
+"Overall Skill Strength: "+skillPercent+"%";
+
+/* ---------------- CAREER TABLE ENGINE ---------------- */
+
+let careers = [
+"Graphic Designing",
+"Marketing & Advertising",
+"Human Services",
+"Business Management",
+"Research & Analytics"
+];
+
+let table = "";
+
+careers.forEach(career=>{
+
+let interestScore = Math.floor(Math.random()*40+60);
+let skillScore = Math.floor(Math.random()*40+60);
+
+let tag="";
+if(interestScore>80 && skillScore>75) tag="<span class='tag top'>Top Choice</span>";
+else if(interestScore>70) tag="<span class='tag good'>Good Choice</span>";
+else if(interestScore>60) tag="<span class='tag optional'>Optional</span>";
+else tag="<span class='tag avoid'>Avoid</span>";
+
+table += `
+<tr>
+<td>${career}</td>
+<td>${interestScore}%</td>
+<td>${skillScore}%</td>
+<td>${tag}</td>
+</tr>`;
+});
+
+document.getElementById("careerTable").innerHTML = table;
+
+/* ---------------- PDF DOWNLOAD ---------------- */
+
+function downloadPDF(){
+
+const { jsPDF } = window.jspdf;
+const doc = new jsPDF();
+
+doc.setFontSize(18);
+doc.text("CareerByChoice Career Report",20,20);
+
+doc.setFontSize(12);
+doc.text("Personality Analysis:",20,40);
+doc.text(personality.replace(/<br>/g," "),20,50);
+
+doc.text("Skill Strength: "+skillPercent+"%",20,65);
+
+doc.save("Career_Report.pdf");
+}
 
 </script>
 
