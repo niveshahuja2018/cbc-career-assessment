@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>CareerByChoice Assessment</title>
-  <meta charset="UTF-8">
-  <style>
-    <style>
+<title>CareerByChoice Assessment</title>
+<meta charset="UTF-8">
+
+<style>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
 
 body{
-  font-family: 'Poppins', sans-serif;
+  font-family:'Poppins',sans-serif;
   background:#F4F7FA;
   margin:0;
   color:#1E293B;
@@ -19,18 +19,12 @@ header{
   color:white;
   padding:30px;
   text-align:center;
-  letter-spacing:1px;
-}
-
-header h1{
-  margin:0;
-  font-weight:600;
 }
 
 .container{
   width:80%;
   margin:auto;
-  padding:50px 0;
+  padding:40px 0;
 }
 
 .card{
@@ -38,33 +32,24 @@ header h1{
   padding:45px;
   border-radius:18px;
   box-shadow:0 12px 40px rgba(0,0,0,0.08);
-  margin-bottom:40px;
 }
 
 h2{
   color:#0A2E52;
-  font-weight:600;
-  margin-bottom:30px;
   border-left:6px solid #0E7490;
   padding-left:15px;
 }
 
 .question{
-  margin-top:25px;
-  padding-bottom:20px;
+  margin-top:20px;
+  padding-bottom:15px;
   border-bottom:1px solid #E2E8F0;
 }
 
 label{
   display:block;
-  margin-top:8px;
+  margin-top:6px;
   cursor:pointer;
-  padding:6px 0;
-  transition:0.3s;
-}
-
-label:hover{
-  color:#0E7490;
 }
 
 input[type="radio"]{
@@ -74,37 +59,33 @@ input[type="radio"]{
 button{
   background:#0E7490;
   color:white;
-  padding:16px 40px;
+  padding:14px 35px;
   border:none;
   border-radius:10px;
-  cursor:pointer;
   font-size:16px;
-  font-weight:500;
-  margin-top:40px;
-  transition:0.3s;
+  margin-top:30px;
+  cursor:pointer;
 }
 
 button:hover{
   background:#14B8A6;
-  transform:translateY(-2px);
 }
-
 </style>
 </head>
 
 <body>
 
 <header>
-  <h1>CareerByChoice Professional Assessment</h1>
+<h1>CareerByChoice Professional Assessment</h1>
 </header>
 
 <div class="container">
-
 <div class="card">
-<h2>Section 1 – Personality (20 Questions)</h2>
+
 <form id="form">
 
-<!-- INTROVERSION / EXTROVERSION -->
+<h2>Section 1 – Personality</h2>
+
 <div class="question">
 1. After a long week you recharge:
 <label><input type="radio" name="q1" value="I"> Alone</label>
@@ -123,7 +104,6 @@ button:hover{
 <label><input type="radio" name="q3" value="E"> Many interactions</label>
 </div>
 
-<!-- SENSING / INTUITIVE -->
 <div class="question">
 4. You trust:
 <label><input type="radio" name="q4" value="S"> Proven facts</label>
@@ -142,7 +122,6 @@ button:hover{
 <label><input type="radio" name="q6" value="N"> Future implications</label>
 </div>
 
-<!-- THINKING / FEELING -->
 <div class="question">
 7. In conflict:
 <label><input type="radio" name="q7" value="T"> Logical fairness</label>
@@ -156,12 +135,11 @@ button:hover{
 </div>
 
 <div class="question">
-9. When correcting someone:
+9. Correcting someone:
 <label><input type="radio" name="q9" value="T"> Direct correction</label>
 <label><input type="radio" name="q9" value="F"> Consider feelings</label>
 </div>
 
-<!-- JUDGING / PERCEIVING -->
 <div class="question">
 10. Daily life:
 <label><input type="radio" name="q10" value="J"> Planned</label>
@@ -180,44 +158,42 @@ button:hover{
 <label><input type="radio" name="q12" value="P"> Pressure motivates</label>
 </div>
 
-<!-- RIASEC Interest -->
 <h2>Section 2 – Interest (RIASEC)</h2>
 
 <div class="question">
-13. I enjoy creating art/design:
+13. I enjoy creative art:
 <label><input type="radio" name="q13" value="A"> Yes</label>
 <label><input type="radio" name="q13" value="R"> No</label>
 </div>
 
 <div class="question">
-14. I enjoy solving research problems:
-<label><input type="radio" name="q14" value="I"> Yes</label>
-<label><input type="radio" name="q14" value="S"> No</label>
+14. I enjoy research:
+<label><input type="radio" name="q14" value="I_R"> Yes</label>
+<label><input type="radio" name="q14" value="S_R"> No</label>
 </div>
 
 <div class="question">
-15. I enjoy selling or persuading:
-<label><input type="radio" name="q15" value="E"> Yes</label>
+15. I enjoy persuading:
+<label><input type="radio" name="q15" value="E_R"> Yes</label>
 <label><input type="radio" name="q15" value="C"> No</label>
 </div>
 
 <div class="question">
-16. I enjoy helping people directly:
-<label><input type="radio" name="q16" value="S"> Yes</label>
+16. I enjoy helping others:
+<label><input type="radio" name="q16" value="S_R"> Yes</label>
 <label><input type="radio" name="q16" value="R"> No</label>
 </div>
 
-<!-- Skills -->
 <h2>Section 3 – Skills</h2>
 
 <div class="question">
-17. My communication skills are:
+17. Communication skills:
 <label><input type="radio" name="q17" value="HIGH"> Strong</label>
 <label><input type="radio" name="q17" value="LOW"> Moderate</label>
 </div>
 
 <div class="question">
-18. My logical reasoning is:
+18. Logical reasoning:
 <label><input type="radio" name="q18" value="HIGH"> Strong</label>
 <label><input type="radio" name="q18" value="LOW"> Moderate</label>
 </div>
@@ -245,14 +221,19 @@ function generate(){
 
 let scores={
 I:0,E:0,S:0,N:0,T:0,F:0,J:0,P:0,
-R:0,I_R:0,A:0,S_R:0,E_R:0,C:0,
+A:0,R:0,I_R:0,S_R:0,E_R:0,C:0,
 skillHigh:0
 };
 
-let form=document.forms["form"];
-
 for(let i=1;i<=20;i++){
-let val=form["q"+i].value;
+let answer=document.querySelector(`input[name="q${i}"]:checked`);
+
+if(!answer){
+alert("Please answer all questions before submitting.");
+return;
+}
+
+let val=answer.value;
 
 if(val==="HIGH") scores.skillHigh++;
 else if(val==="LOW"){}
