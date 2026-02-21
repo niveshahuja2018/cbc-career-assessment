@@ -1,22 +1,81 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Career Report</title>
+<title>CareerByChoice Professional Report</title>
 <meta charset="UTF-8">
+
+<!-- PDF Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
 <style>
 body{
-  font-family:Arial;
+  font-family: Arial, sans-serif;
   background:#F4F7FA;
   margin:0;
 }
-.section{
+
+.header{
+  background:linear-gradient(90deg,#0A2E52,#0E7490);
+  color:white;
+  padding:40px;
+  text-align:center;
+}
+
+.page{
   background:white;
   width:80%;
   margin:40px auto;
-  padding:30px;
-  border-radius:10px;
-  box-shadow:0 5px 20px rgba(0,0,0,0.1);
+  padding:40px;
+  border-radius:15px;
+  box-shadow:0 8px 25px rgba(0,0,0,0.1);
 }
+
+h2{
+  color:#0A2E52;
+  border-left:5px solid #0E7490;
+  padding-left:10px;
+}
+
+.bar-container{
+  background:#E2E8F0;
+  height:12px;
+  border-radius:6px;
+  margin-top:5px;
+}
+
+.bar{
+  height:12px;
+  border-radius:6px;
+  background:#0E7490;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:20px;
+}
+
+th,td{
+  padding:10px;
+  border-bottom:1px solid #ddd;
+}
+
+th{
+  background:#F1F5F9;
+}
+
+.tag{
+  padding:4px 10px;
+  border-radius:12px;
+  font-size:12px;
+  color:white;
+}
+
+.top{background:#16A34A;}
+.good{background:#CA8A04;}
+.optional{background:#0284C7;}
+.avoid{background:#DC2626;}
+
 button{
   background:#0E7490;
   color:white;
@@ -24,75 +83,155 @@ button{
   border:none;
   border-radius:6px;
   cursor:pointer;
+  display:block;
+  margin:30px auto;
 }
-button:hover{
-  background:#14B8A6;
-}
+button:hover{background:#14B8A6;}
 </style>
 </head>
 
 <body>
 
-<div class="section">
-<h2>Career Report</h2>
-<div id="output"></div>
-<br>
-<button onclick="downloadReport()">Download Report</button>
+<div class="header">
+<h1>CareerByChoice Career Assessment Report</h1>
 </div>
+
+<div id="reportContent">
+
+<div class="page">
+<h2>1. Personality Breakdown</h2>
+<div id="personality"></div>
+</div>
+
+<div class="page">
+<h2>2. Interest Profile (RIASEC)</h2>
+<div id="interest"></div>
+</div>
+
+<div class="page">
+<h2>3. Skills Summary</h2>
+<div id="skills"></div>
+</div>
+
+<div class="page">
+<h2>4. Career Path Recommendations</h2>
+<table>
+<thead>
+<tr>
+<th>Career Path</th>
+<th>Match %</th>
+<th>Recommendation</th>
+</tr>
+</thead>
+<tbody id="careerTable"></tbody>
+</table>
+</div>
+
+</div>
+
+<button onclick="downloadPDF()">Download PDF Report</button>
 
 <script>
 
 let raw = localStorage.getItem("fullScores");
 
 if(!raw){
-document.getElementById("output").innerHTML =
-"No assessment data found. Please complete assessment first.";
+document.body.innerHTML="<h2 style='text-align:center;margin-top:100px'>Complete assessment first.</h2>";
 }
-else{
 
 let s = JSON.parse(raw);
 
-/* Deterministic Career Logic */
+/* ---------------- PERCENTAGE ENGINE ---------------- */
 
-let careerList = [
-{ name:"Graphic Designing", score: s.A*3 + s.skillHigh*2 },
-{ name:"Marketing & Advertising", score: s.E_R*3 + s.E*2 },
-{ name:"Human Services", score: s.S_R*3 + s.F*2 },
-{ name:"Research & Analytics", score: s.I_R*3 + s.N*2 },
-{ name:"Business Management", score: s.J*2 + s.E*2 }
+function percentage(val,total){
+if(total===0) return 0;
+return Math.round((val/total)*100);
+}
+
+/* ---------------- PERSONALITY ---------------- */
+
+let totalEI = s.E + s.I;
+let totalSN = s.S + s.N;
+let totalTF = s.T + s.F;
+let totalJP = s.J + s.P;
+
+document.getElementById("personality").innerHTML =
+"Extroversion: "+percentage(s.E,totalEI)+"%<br>"+
+"Intuition: "+percentage(s.N,totalSN)+"%<br>"+
+"Feeling: "+percentage(s.F,totalTF)+"%<br>"+
+"Judging: "+percentage(s.J,totalJP)+"%";
+
+/* ---------------- RIASEC ---------------- */
+
+let riasec = {
+Artistic:s.A,
+Investigative:s.I_R,
+Enterprising:s.E_R,
+Social:s.S_R,
+Conventional:s.C,
+Realistic:s.R
+};
+
+let interestHTML="";
+for(let key in riasec){
+interestHTML += `
+<div>${key}: ${riasec[key]*100}%
+<div class="bar-container">
+<div class="bar" style="width:${riasec[key]*100}%"></div>
+</div></div>`;
+}
+document.getElementById("interest").innerHTML=interestHTML;
+
+/* ---------------- SKILLS ---------------- */
+
+let skillPercent = percentage(s.skillHigh,5);
+document.getElementById("skills").innerHTML=
+"Overall Skill Strength: "+skillPercent+"%";
+
+/* ---------------- CAREER PATH TABLE ---------------- */
+
+let careerMap=[
+{name:"Graphic Designing",score:s.A*3 + s.skillHigh*2},
+{name:"Marketing & Advertising",score:s.E_R*3 + s.E*2},
+{name:"Human Services",score:s.S_R*3 + s.F*2},
+{name:"Research & Analytics",score:s.I_R*3 + s.N*2},
+{name:"Business Management",score:s.J*2 + s.E*2}
 ];
 
-careerList.sort((a,b)=>b.score-a.score);
+careerMap.sort((a,b)=>b.score-a.score);
 
-let html = "<h3>Top Career Recommendations:</h3>";
+let tableHTML="";
 
-careerList.forEach((career,index)=>{
-let tag = "";
-if(index===0) tag="⭐ Top Choice";
-else if(index===1) tag="✔ Good Choice";
-else tag="◉ Optional";
+careerMap.forEach((career,index)=>{
 
-html += career.name + " - Score: " + career.score + " - " + tag + "<br>";
+let percentMatch = Math.min(100, career.score*10);
+
+let tag="";
+let classTag="";
+
+if(index===0){ tag="Top Choice"; classTag="top"; }
+else if(index===1){ tag="Good Choice"; classTag="good"; }
+else if(index===2){ tag="Optional"; classTag="optional"; }
+else{ tag="Avoid"; classTag="avoid"; }
+
+tableHTML+=`
+<tr>
+<td>${career.name}</td>
+<td>${percentMatch}%</td>
+<td><span class="tag ${classTag}">${tag}</span></td>
+</tr>`;
 });
 
-document.getElementById("output").innerHTML = html;
-}
+document.getElementById("careerTable").innerHTML=tableHTML;
 
-/* Download simple TXT report */
-function downloadReport(){
+/* ---------------- PDF DOWNLOAD ---------------- */
 
-let text = document.getElementById("output").innerText;
+function downloadPDF(){
 
-if(text===""){
-alert("No report available.");
-return;
-}
+let element = document.getElementById("reportContent");
 
-let blob = new Blob([text], {type:"text/plain"});
-let link = document.createElement("a");
-link.href = URL.createObjectURL(blob);
-link.download = "Career_Report.txt";
-link.click();
+html2pdf().from(element).save("CareerByChoice_Report.pdf");
+
 }
 
 </script>
