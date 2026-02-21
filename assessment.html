@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Career Assessment</title>
+  <meta charset="UTF-8">
+  <style>
+    body{
+      font-family: Arial, sans-serif;
+      background:#F4F7FA;
+      margin:0;
+    }
+
+    header{
+      background:#0A2E52;
+      color:white;
+      padding:20px;
+      text-align:center;
+    }
+
+    .container{
+      width:80%;
+      margin:auto;
+      padding:40px;
+    }
+
+    .card{
+      background:white;
+      padding:30px;
+      border-radius:10px;
+      box-shadow:0 5px 20px rgba(0,0,0,0.1);
+      margin-top:20px;
+    }
+
+    label{
+      display:block;
+      margin-top:20px;
+    }
+
+    input[type=range]{
+      width:100%;
+    }
+
+    button{
+      background:#0E7490;
+      color:white;
+      padding:10px 20px;
+      border:none;
+      border-radius:6px;
+      cursor:pointer;
+      margin-top:30px;
+    }
+
+    button:hover{
+      background:#14B8A6;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>CareerByChoice Assessment</h1>
+</header>
+
+<div class="container">
+
+  <div class="card">
+
+    <h2>Answer the following:</h2>
+
+    <label>I enjoy creative activities</label>
+    <input type="range" min="1" max="5" id="q1">
+
+    <label>I like leadership roles</label>
+    <input type="range" min="1" max="5" id="q2">
+
+    <label>I prefer structured planning</label>
+    <input type="range" min="1" max="5" id="q3">
+
+    <button onclick="generateReport()">Generate Report</button>
+
+  </div>
+
+</div>
+
+<script>
+function generateReport(){
+
+  var creativity = document.getElementById("q1").value * 20;
+  var leadership = document.getElementById("q2").value * 20;
+  var structured = document.getElementById("q3").value * 20;
+
+  localStorage.setItem("creativity", creativity);
+  localStorage.setItem("leadership", leadership);
+  localStorage.setItem("structured", structured);
+
+  window.location.href="report.html";
+}
+</script>
+
+</body>
+</html>
