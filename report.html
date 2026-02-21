@@ -4,28 +4,40 @@
 <title>Career Report</title>
 <meta charset="UTF-8">
 <style>
-body{font-family:Arial;background:#F4F7FA;margin:0}
-.section{background:white;width:80%;margin:40px auto;padding:30px;border-radius:15px;box-shadow:0 8px 25px rgba(0,0,0,0.1)}
-h2{color:#0A2E52}
-button{background:#0E7490;color:white;padding:10px 25px;border:none;border-radius:8px;cursor:pointer}
+body{
+  font-family:Arial;
+  background:#F4F7FA;
+  margin:0;
+}
+.section{
+  background:white;
+  width:80%;
+  margin:40px auto;
+  padding:30px;
+  border-radius:10px;
+  box-shadow:0 5px 20px rgba(0,0,0,0.1);
+}
+button{
+  background:#0E7490;
+  color:white;
+  padding:12px 25px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+}
+button:hover{
+  background:#14B8A6;
+}
 </style>
 </head>
 
 <body>
 
 <div class="section">
-<h2>Personality Breakdown</h2>
-<div id="personality"></div>
-</div>
-
-<div class="section">
-<h2>Interest Breakdown (RIASEC)</h2>
-<div id="interest"></div>
-</div>
-
-<div class="section">
-<h2>Career Recommendations</h2>
-<div id="careerOutput"></div>
+<h2>Career Report</h2>
+<div id="output"></div>
+<br>
+<button onclick="downloadReport()">Download Report</button>
 </div>
 
 <script>
@@ -33,120 +45,57 @@ button{background:#0E7490;color:white;padding:10px 25px;border:none;border-radiu
 let raw = localStorage.getItem("fullScores");
 
 if(!raw){
-document.body.innerHTML = "<h2 style='text-align:center;margin-top:100px'>No assessment data found. Please complete assessment first.</h2>";
+document.getElementById("output").innerHTML =
+"No assessment data found. Please complete assessment first.";
 }
+else{
 
 let s = JSON.parse(raw);
 
-/* ---------------- DETERMINISTIC CAREER ENGINE ---------------- */
+/* Deterministic Career Logic */
 
-let careerEngine = [
-
-{
-name:"Graphic Designing",
-weight:{
-A:3,
-E_R:1,
-skillHigh:2
-}
-},
-
-{
-name:"Marketing & Advertising",
-weight:{
-E_R:3,
-E:2,
-skillHigh:2
-}
-},
-
-{
-name:"Human Services",
-weight:{
-S_R:3,
-F:2,
-skillHigh:1
-}
-},
-
-{
-name:"Research & Analytics",
-weight:{
-I_R:3,
-N:2
-}
-},
-
-{
-name:"Business Management",
-weight:{
-E:2,
-J:2,
-skillHigh:2
-}
-}
-
+let careerList = [
+{ name:"Graphic Designing", score: s.A*3 + s.skillHigh*2 },
+{ name:"Marketing & Advertising", score: s.E_R*3 + s.E*2 },
+{ name:"Human Services", score: s.S_R*3 + s.F*2 },
+{ name:"Research & Analytics", score: s.I_R*3 + s.N*2 },
+{ name:"Business Management", score: s.J*2 + s.E*2 }
 ];
 
-/* ---------- Calculate Personality ---------- */
+careerList.sort((a,b)=>b.score-a.score);
 
-let personalityText =
-"Extrovert Score: "+s.E+" | "+
-"Intuitive Score: "+s.N+" | "+
-"Feeling Score: "+s.F+" | "+
-"Judging Score: "+s.J;
+let html = "<h3>Top Career Recommendations:</h3>";
 
-document.getElementById("personality").innerHTML = personalityText;
-
-/* ---------- Interest ---------- */
-
-document.getElementById("interest").innerHTML =
-"Artistic: "+s.A+" | "+
-"Investigative: "+s.I_R+" | "+
-"Enterprising: "+s.E_R+" | "+
-"Social: "+s.S_R;
-
-/* ---------- Score Careers ---------- */
-
-let results = [];
-
-careerEngine.forEach(career=>{
-
-let score = 0;
-
-for(let key in career.weight){
-if(key==="skillHigh"){
-score += s.skillHigh * career.weight[key];
-}
-else{
-score += (s[key] || 0) * career.weight[key];
-}
-}
-
-results.push({name:career.name,score:score});
-});
-
-/* Sort highest first */
-results.sort((a,b)=>b.score - a.score);
-
-/* Generate Output */
-let output="";
-
-results.forEach((r,index)=>{
-
-let tag="";
-
+careerList.forEach((career,index)=>{
+let tag = "";
 if(index===0) tag="⭐ Top Choice";
 else if(index===1) tag="✔ Good Choice";
-else if(index===2) tag="◉ Optional";
-else tag="✖ Avoid";
+else tag="◉ Optional";
 
-output += "<p><strong>"+r.name+"</strong> – Score: "+r.score+" – "+tag+"</p>";
-
+html += career.name + " - Score: " + career.score + " - " + tag + "<br>";
 });
 
-document.getElementById("careerOutput").innerHTML = output;
+document.getElementById("output").innerHTML = html;
+}
+
+/* Download simple TXT report */
+function downloadReport(){
+
+let text = document.getElementById("output").innerText;
+
+if(text===""){
+alert("No report available.");
+return;
+}
+
+let blob = new Blob([text], {type:"text/plain"});
+let link = document.createElement("a");
+link.href = URL.createObjectURL(blob);
+link.download = "Career_Report.txt";
+link.click();
+}
 
 </script>
+
 </body>
 </html>
