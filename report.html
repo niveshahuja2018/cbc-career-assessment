@@ -1,88 +1,76 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Career Report</title>
-  <meta charset="UTF-8">
-  <style>
-    body{
-      font-family: Arial, sans-serif;
-      background:#F4F7FA;
-      margin:0;
-    }
-
-    header{
-      background:#0A2E52;
-      color:white;
-      padding:20px;
-      text-align:center;
-    }
-
-    .container{
-      width:80%;
-      margin:auto;
-      padding:40px;
-    }
-
-    .card{
-      background:white;
-      padding:30px;
-      border-radius:10px;
-      box-shadow:0 5px 20px rgba(0,0,0,0.1);
-      margin-top:20px;
-    }
-
-    h2{
-      color:#0A2E52;
-    }
-
-  </style>
+<title>CareerByChoice Report</title>
+<meta charset="UTF-8">
+<style>
+body{font-family:'Segoe UI',sans-serif;margin:0;background:#F4F7FA;}
+.section{background:white;margin:40px auto;width:85%;padding:40px;border-radius:12px;box-shadow:0 8px 25px rgba(0,0,0,0.07);}
+h1,h2{color:#0A2E52;}
+.page-break{page-break-after:always;}
+.highlight{color:#0E7490;font-weight:bold;font-size:20px;}
+</style>
 </head>
 
 <body>
 
-<header>
-  <h1>Career Assessment Report</h1>
-</header>
+<div class="section">
+<h1>Career Assessment Report</h1>
+<p id="personality"></p>
+</div>
 
-<div class="container">
-  <div class="card">
-    <h2 id="personalityType"></h2>
-    <h3>Career Motivation</h3>
-    <p id="motivation"></p>
+<div class="section">
+<h2>Interest Profile (RIASEC)</h2>
+<p id="interest"></p>
+</div>
 
-    <h3>Top Career Recommendation</h3>
-    <p id="recommendation"></p>
-  </div>
+<div class="section">
+<h2>Skills Summary</h2>
+<p id="skills"></p>
+</div>
+
+<div class="section">
+<h2>Recommended Career Cluster</h2>
+<p id="cluster"></p>
 </div>
 
 <script>
 
-let scores = JSON.parse(localStorage.getItem("scores"));
+let s=JSON.parse(localStorage.getItem("fullScores"));
 
-let personality =
-  (scores.E > scores.I ? "Extrovert" : "Introvert") + " - " +
-  (scores.N > scores.S ? "Intuitive" : "Sensing") + " - " +
-  (scores.F > scores.T ? "Feeling" : "Thinking") + " - " +
-  (scores.J > scores.P ? "Judging" : "Perceiving");
+// Personality
+let personality=
+(s.E>s.I?"Extrovert ":"Introvert ")+
+(s.N>s.S?"Intuitive ":"Sensing ")+
+(s.F>s.T?"Feeling ":"Thinking ")+
+(s.J>s.P?"Judging":"Perceiving");
 
-document.getElementById("personalityType").innerText =
-"Personality Type: " + personality;
+document.getElementById("personality").innerHTML=
+"<span class='highlight'>"+personality+"</span> personality type identified.";
 
-if(scores.CREATIVE > 0){
-  document.getElementById("motivation").innerText = "High Creativity Motivation";
-  document.getElementById("recommendation").innerText =
-  "Graphical Designing / Media / Creative Fields";
-}
-else if(scores.GOAL > 0){
-  document.getElementById("motivation").innerText = "Achievement & Leadership Motivation";
-  document.getElementById("recommendation").innerText =
-  "Marketing / Business Management / Entrepreneurship";
-}
-else{
-  document.getElementById("motivation").innerText = "Social Impact Motivation";
-  document.getElementById("recommendation").innerText =
-  "Human Services / Counselling / Social Work";
-}
+// Interest
+let interestType="";
+if(s.A>=1) interestType="Artistic";
+else if(s.E_R>=1) interestType="Enterprising";
+else if(s.S_R>=1) interestType="Social";
+else interestType="Investigative";
+
+document.getElementById("interest").innerHTML=
+"<span class='highlight'>"+interestType+"</span> dominant interest area.";
+
+// Skills
+document.getElementById("skills").innerHTML=
+"You demonstrated strong skills in "+s.skillHigh+" key competency areas.";
+
+// Career Cluster Mapping
+let cluster="";
+if(interestType==="Artistic") cluster="Arts & Media Cluster";
+else if(interestType==="Enterprising") cluster="Business & Marketing Cluster";
+else if(interestType==="Social") cluster="Human Services Cluster";
+else cluster="Research & Technology Cluster";
+
+document.getElementById("cluster").innerHTML=
+"<span class='highlight'>"+cluster+"</span> recommended based on profile.";
 
 </script>
 
