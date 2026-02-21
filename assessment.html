@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Career Assessment</title>
+  <title>CareerByChoice Assessment</title>
   <meta charset="UTF-8">
   <style>
     body{
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', sans-serif;
       background:#F4F7FA;
       margin:0;
     }
@@ -13,7 +13,7 @@
     header{
       background:#0A2E52;
       color:white;
-      padding:20px;
+      padding:25px;
       text-align:center;
     }
 
@@ -25,136 +25,215 @@
 
     .card{
       background:white;
-      padding:30px;
-      border-radius:10px;
-      box-shadow:0 5px 20px rgba(0,0,0,0.1);
-      margin-top:20px;
+      padding:35px;
+      border-radius:12px;
+      box-shadow:0 8px 30px rgba(0,0,0,0.08);
+      margin-bottom:30px;
     }
 
     .question{
       margin-top:25px;
       padding-bottom:15px;
-      border-bottom:1px solid #ddd;
+      border-bottom:1px solid #eee;
     }
 
     label{
       display:block;
-      margin-top:5px;
+      margin-top:6px;
       cursor:pointer;
+    }
+
+    h2{
+      color:#0A2E52;
     }
 
     button{
       background:#0E7490;
       color:white;
-      padding:12px 25px;
+      padding:14px 28px;
       border:none;
-      border-radius:6px;
+      border-radius:8px;
       cursor:pointer;
-      margin-top:30px;
       font-size:16px;
+      margin-top:40px;
     }
 
     button:hover{
       background:#14B8A6;
     }
-
   </style>
 </head>
 
 <body>
 
 <header>
-  <h1>CareerByChoice Psychometric Assessment</h1>
+  <h1>CareerByChoice Professional Assessment</h1>
 </header>
 
 <div class="container">
-  <div class="card">
-    <h2>Answer All Questions</h2>
 
-    <form id="assessmentForm">
+<div class="card">
+<h2>Section 1 – Personality (20 Questions)</h2>
+<form id="form">
 
-      <!-- Question 1 -->
-      <div class="question">
-        <strong>1. After a long week, you feel recharged when:</strong>
-        <label><input type="radio" name="q1" value="I"> A) Alone</label>
-        <label><input type="radio" name="q1" value="E"> B) With others</label>
-      </div>
+<!-- INTROVERSION / EXTROVERSION -->
+<div class="question">
+1. After a long week you recharge:
+<label><input type="radio" name="q1" value="I"> Alone</label>
+<label><input type="radio" name="q1" value="E"> With others</label>
+</div>
 
-      <!-- Question 2 -->
-      <div class="question">
-        <strong>2. In meetings:</strong>
-        <label><input type="radio" name="q2" value="I"> A) Think then speak</label>
-        <label><input type="radio" name="q2" value="E"> B) Speak while thinking</label>
-      </div>
+<div class="question">
+2. In meetings:
+<label><input type="radio" name="q2" value="I"> Think then speak</label>
+<label><input type="radio" name="q2" value="E"> Speak while thinking</label>
+</div>
 
-      <!-- Question 3 -->
-      <div class="question">
-        <strong>3. In social settings:</strong>
-        <label><input type="radio" name="q3" value="I"> A) Deep talks</label>
-        <label><input type="radio" name="q3" value="E"> B) Many interactions</label>
-      </div>
+<div class="question">
+3. Social preference:
+<label><input type="radio" name="q3" value="I"> Deep talks</label>
+<label><input type="radio" name="q3" value="E"> Many interactions</label>
+</div>
 
-      <!-- Question 5 -->
-      <div class="question">
-        <strong>4. You trust more:</strong>
-        <label><input type="radio" name="q4" value="S"> A) Proven facts</label>
-        <label><input type="radio" name="q4" value="N"> B) Future possibilities</label>
-      </div>
+<!-- SENSING / INTUITIVE -->
+<div class="question">
+4. You trust:
+<label><input type="radio" name="q4" value="S"> Proven facts</label>
+<label><input type="radio" name="q4" value="N"> Future possibilities</label>
+</div>
 
-      <!-- Question 9 -->
-      <div class="question">
-        <strong>5. In conflict:</strong>
-        <label><input type="radio" name="q5" value="T"> A) Logical fairness</label>
-        <label><input type="radio" name="q5" value="F"> B) Emotional harmony</label>
-      </div>
+<div class="question">
+5. Learning:
+<label><input type="radio" name="q5" value="S"> Step-by-step</label>
+<label><input type="radio" name="q5" value="N"> Big picture</label>
+</div>
 
-      <!-- Question 13 -->
-      <div class="question">
-        <strong>6. Daily preference:</strong>
-        <label><input type="radio" name="q6" value="J"> A) Planned</label>
-        <label><input type="radio" name="q6" value="P"> B) Flexible</label>
-      </div>
+<div class="question">
+6. Focus:
+<label><input type="radio" name="q6" value="S"> Present details</label>
+<label><input type="radio" name="q6" value="N"> Future implications</label>
+</div>
 
-      <!-- Motivation based -->
-      <div class="question">
-        <strong>7. Satisfaction comes from:</strong>
-        <label><input type="radio" name="q7" value="CREATIVE"> A) Creativity</label>
-        <label><input type="radio" name="q7" value="GOAL"> B) Achieving goals</label>
-        <label><input type="radio" name="q7" value="IMPACT"> C) Helping others</label>
-      </div>
+<!-- THINKING / FEELING -->
+<div class="question">
+7. In conflict:
+<label><input type="radio" name="q7" value="T"> Logical fairness</label>
+<label><input type="radio" name="q7" value="F"> Emotional harmony</label>
+</div>
 
-      <button type="button" onclick="submitAssessment()">Generate Report</button>
+<div class="question">
+8. Decision making:
+<label><input type="radio" name="q8" value="T"> Data driven</label>
+<label><input type="radio" name="q8" value="F"> Values driven</label>
+</div>
 
-    </form>
-  </div>
+<div class="question">
+9. When correcting someone:
+<label><input type="radio" name="q9" value="T"> Direct correction</label>
+<label><input type="radio" name="q9" value="F"> Consider feelings</label>
+</div>
+
+<!-- JUDGING / PERCEIVING -->
+<div class="question">
+10. Daily life:
+<label><input type="radio" name="q10" value="J"> Planned</label>
+<label><input type="radio" name="q10" value="P"> Flexible</label>
+</div>
+
+<div class="question">
+11. Starting projects:
+<label><input type="radio" name="q11" value="J"> Create structure</label>
+<label><input type="radio" name="q11" value="P"> Explore options</label>
+</div>
+
+<div class="question">
+12. Deadlines:
+<label><input type="radio" name="q12" value="J"> Plan early</label>
+<label><input type="radio" name="q12" value="P"> Pressure motivates</label>
+</div>
+
+<!-- RIASEC Interest -->
+<h2>Section 2 – Interest (RIASEC)</h2>
+
+<div class="question">
+13. I enjoy creating art/design:
+<label><input type="radio" name="q13" value="A"> Yes</label>
+<label><input type="radio" name="q13" value="R"> No</label>
+</div>
+
+<div class="question">
+14. I enjoy solving research problems:
+<label><input type="radio" name="q14" value="I"> Yes</label>
+<label><input type="radio" name="q14" value="S"> No</label>
+</div>
+
+<div class="question">
+15. I enjoy selling or persuading:
+<label><input type="radio" name="q15" value="E"> Yes</label>
+<label><input type="radio" name="q15" value="C"> No</label>
+</div>
+
+<div class="question">
+16. I enjoy helping people directly:
+<label><input type="radio" name="q16" value="S"> Yes</label>
+<label><input type="radio" name="q16" value="R"> No</label>
+</div>
+
+<!-- Skills -->
+<h2>Section 3 – Skills</h2>
+
+<div class="question">
+17. My communication skills are:
+<label><input type="radio" name="q17" value="HIGH"> Strong</label>
+<label><input type="radio" name="q17" value="LOW"> Moderate</label>
+</div>
+
+<div class="question">
+18. My logical reasoning is:
+<label><input type="radio" name="q18" value="HIGH"> Strong</label>
+<label><input type="radio" name="q18" value="LOW"> Moderate</label>
+</div>
+
+<div class="question">
+19. Leadership confidence:
+<label><input type="radio" name="q19" value="HIGH"> High</label>
+<label><input type="radio" name="q19" value="LOW"> Moderate</label>
+</div>
+
+<div class="question">
+20. Creativity level:
+<label><input type="radio" name="q20" value="HIGH"> High</label>
+<label><input type="radio" name="q20" value="LOW"> Moderate</label>
+</div>
+
+<button type="button" onclick="generate()">Generate Professional Report</button>
+
+</form>
+</div>
 </div>
 
 <script>
+function generate(){
 
-function submitAssessment(){
+let scores={
+I:0,E:0,S:0,N:0,T:0,F:0,J:0,P:0,
+R:0,I_R:0,A:0,S_R:0,E_R:0,C:0,
+skillHigh:0
+};
 
-  let scores = {
-    I:0, E:0,
-    S:0, N:0,
-    T:0, F:0,
-    J:0, P:0,
-    CREATIVE:0,
-    GOAL:0,
-    IMPACT:0
-  };
+let form=document.forms["form"];
 
-  let form = document.forms["assessmentForm"];
+for(let i=1;i<=20;i++){
+let val=form["q"+i].value;
 
-  for (let i = 1; i <= 7; i++) {
-    let answer = form["q"+i].value;
-    scores[answer]++;
-  }
-
-  localStorage.setItem("scores", JSON.stringify(scores));
-
-  window.location.href="report.html";
+if(val==="HIGH") scores.skillHigh++;
+else if(val==="LOW"){}
+else if(scores.hasOwnProperty(val)) scores[val]++;
 }
 
+localStorage.setItem("fullScores",JSON.stringify(scores));
+window.location.href="report.html";
+}
 </script>
 
 </body>
