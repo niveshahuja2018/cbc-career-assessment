@@ -18,7 +18,7 @@
     }
 
     .container{
-      width:80%;
+      width:85%;
       margin:auto;
       padding:40px;
     }
@@ -31,71 +31,130 @@
       margin-top:20px;
     }
 
-    label{
-      display:block;
-      margin-top:20px;
+    .question{
+      margin-top:25px;
+      padding-bottom:15px;
+      border-bottom:1px solid #ddd;
     }
 
-    input[type=range]{
-      width:100%;
+    label{
+      display:block;
+      margin-top:5px;
+      cursor:pointer;
     }
 
     button{
       background:#0E7490;
       color:white;
-      padding:10px 20px;
+      padding:12px 25px;
       border:none;
       border-radius:6px;
       cursor:pointer;
       margin-top:30px;
+      font-size:16px;
     }
 
     button:hover{
       background:#14B8A6;
     }
+
   </style>
 </head>
 
 <body>
 
 <header>
-  <h1>CareerByChoice Assessment</h1>
+  <h1>CareerByChoice Psychometric Assessment</h1>
 </header>
 
 <div class="container">
-
   <div class="card">
+    <h2>Answer All Questions</h2>
 
-    <h2>Answer the following:</h2>
+    <form id="assessmentForm">
 
-    <label>I enjoy creative activities</label>
-    <input type="range" min="1" max="5" id="q1">
+      <!-- Question 1 -->
+      <div class="question">
+        <strong>1. After a long week, you feel recharged when:</strong>
+        <label><input type="radio" name="q1" value="I"> A) Alone</label>
+        <label><input type="radio" name="q1" value="E"> B) With others</label>
+      </div>
 
-    <label>I like leadership roles</label>
-    <input type="range" min="1" max="5" id="q2">
+      <!-- Question 2 -->
+      <div class="question">
+        <strong>2. In meetings:</strong>
+        <label><input type="radio" name="q2" value="I"> A) Think then speak</label>
+        <label><input type="radio" name="q2" value="E"> B) Speak while thinking</label>
+      </div>
 
-    <label>I prefer structured planning</label>
-    <input type="range" min="1" max="5" id="q3">
+      <!-- Question 3 -->
+      <div class="question">
+        <strong>3. In social settings:</strong>
+        <label><input type="radio" name="q3" value="I"> A) Deep talks</label>
+        <label><input type="radio" name="q3" value="E"> B) Many interactions</label>
+      </div>
 
-    <button onclick="generateReport()">Generate Report</button>
+      <!-- Question 5 -->
+      <div class="question">
+        <strong>4. You trust more:</strong>
+        <label><input type="radio" name="q4" value="S"> A) Proven facts</label>
+        <label><input type="radio" name="q4" value="N"> B) Future possibilities</label>
+      </div>
 
+      <!-- Question 9 -->
+      <div class="question">
+        <strong>5. In conflict:</strong>
+        <label><input type="radio" name="q5" value="T"> A) Logical fairness</label>
+        <label><input type="radio" name="q5" value="F"> B) Emotional harmony</label>
+      </div>
+
+      <!-- Question 13 -->
+      <div class="question">
+        <strong>6. Daily preference:</strong>
+        <label><input type="radio" name="q6" value="J"> A) Planned</label>
+        <label><input type="radio" name="q6" value="P"> B) Flexible</label>
+      </div>
+
+      <!-- Motivation based -->
+      <div class="question">
+        <strong>7. Satisfaction comes from:</strong>
+        <label><input type="radio" name="q7" value="CREATIVE"> A) Creativity</label>
+        <label><input type="radio" name="q7" value="GOAL"> B) Achieving goals</label>
+        <label><input type="radio" name="q7" value="IMPACT"> C) Helping others</label>
+      </div>
+
+      <button type="button" onclick="submitAssessment()">Generate Report</button>
+
+    </form>
   </div>
-
 </div>
 
 <script>
-function generateReport(){
 
-  var creativity = document.getElementById("q1").value * 20;
-  var leadership = document.getElementById("q2").value * 20;
-  var structured = document.getElementById("q3").value * 20;
+function submitAssessment(){
 
-  localStorage.setItem("creativity", creativity);
-  localStorage.setItem("leadership", leadership);
-  localStorage.setItem("structured", structured);
+  let scores = {
+    I:0, E:0,
+    S:0, N:0,
+    T:0, F:0,
+    J:0, P:0,
+    CREATIVE:0,
+    GOAL:0,
+    IMPACT:0
+  };
+
+  let form = document.forms["assessmentForm"];
+
+  for (let i = 1; i <= 7; i++) {
+    let answer = form["q"+i].value;
+    scores[answer]++;
+  }
+
+  localStorage.setItem("scores", JSON.stringify(scores));
 
   window.location.href="report.html";
 }
+
 </script>
 
 </body>
