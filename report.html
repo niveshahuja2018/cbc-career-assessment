@@ -31,28 +31,10 @@
       margin-top:20px;
     }
 
-    .progress{
-      background:#E5E7EB;
-      height:15px;
-      border-radius:8px;
-      margin-top:5px;
-    }
-
-    .fill{
-      height:15px;
-      background:#0E7490;
-      border-radius:8px;
-    }
-
     h2{
-      margin-top:30px;
-    }
-
-    .recommendation{
-      font-size:20px;
-      font-weight:bold;
       color:#0A2E52;
     }
+
   </style>
 </head>
 
@@ -63,58 +45,43 @@
 </header>
 
 <div class="container">
-
   <div class="card">
-    <h2 id="studentName"></h2>
+    <h2 id="personalityType"></h2>
+    <h3>Career Motivation</h3>
+    <p id="motivation"></p>
 
-    <h3>Personality Scores</h3>
-
-    <p>Creativity</p>
-    <div class="progress">
-      <div id="creativityBar" class="fill"></div>
-    </div>
-
-    <p>Leadership</p>
-    <div class="progress">
-      <div id="leadershipBar" class="fill"></div>
-    </div>
-
-    <p>Structured Planning</p>
-    <div class="progress">
-      <div id="structuredBar" class="fill"></div>
-    </div>
-
-    <h2>Top Career Recommendation</h2>
-    <p id="recommendation" class="recommendation"></p>
-
+    <h3>Top Career Recommendation</h3>
+    <p id="recommendation"></p>
   </div>
-
 </div>
 
 <script>
 
-var student = localStorage.getItem("student");
-var creativity = localStorage.getItem("creativity");
-var leadership = localStorage.getItem("leadership");
-var structured = localStorage.getItem("structured");
+let scores = JSON.parse(localStorage.getItem("scores"));
 
-document.getElementById("studentName").innerText = "Report for: " + student;
+let personality =
+  (scores.E > scores.I ? "Extrovert" : "Introvert") + " - " +
+  (scores.N > scores.S ? "Intuitive" : "Sensing") + " - " +
+  (scores.F > scores.T ? "Feeling" : "Thinking") + " - " +
+  (scores.J > scores.P ? "Judging" : "Perceiving");
 
-document.getElementById("creativityBar").style.width = creativity + "%";
-document.getElementById("leadershipBar").style.width = leadership + "%";
-document.getElementById("structuredBar").style.width = structured + "%";
+document.getElementById("personalityType").innerText =
+"Personality Type: " + personality;
 
-if(creativity > 70){
-    document.getElementById("recommendation").innerText =
-    "🎨 Graphical Designing (Top Choice)";
+if(scores.CREATIVE > 0){
+  document.getElementById("motivation").innerText = "High Creativity Motivation";
+  document.getElementById("recommendation").innerText =
+  "Graphical Designing / Media / Creative Fields";
 }
-else if(leadership > 70){
-    document.getElementById("recommendation").innerText =
-    "📊 Marketing & Business Management (Top Choice)";
+else if(scores.GOAL > 0){
+  document.getElementById("motivation").innerText = "Achievement & Leadership Motivation";
+  document.getElementById("recommendation").innerText =
+  "Marketing / Business Management / Entrepreneurship";
 }
 else{
-    document.getElementById("recommendation").innerText =
-    "📘 Explore Multiple Career Paths";
+  document.getElementById("motivation").innerText = "Social Impact Motivation";
+  document.getElementById("recommendation").innerText =
+  "Human Services / Counselling / Social Work";
 }
 
 </script>
