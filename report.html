@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Career Report</title>
+  <meta charset="UTF-8">
+  <style>
+    body{
+      font-family: Arial, sans-serif;
+      background:#F4F7FA;
+      margin:0;
+    }
+
+    header{
+      background:#0A2E52;
+      color:white;
+      padding:20px;
+      text-align:center;
+    }
+
+    .container{
+      width:80%;
+      margin:auto;
+      padding:40px;
+    }
+
+    .card{
+      background:white;
+      padding:30px;
+      border-radius:10px;
+      box-shadow:0 5px 20px rgba(0,0,0,0.1);
+      margin-top:20px;
+    }
+
+    .progress{
+      background:#E5E7EB;
+      height:15px;
+      border-radius:8px;
+      margin-top:5px;
+    }
+
+    .fill{
+      height:15px;
+      background:#0E7490;
+      border-radius:8px;
+    }
+
+    h2{
+      margin-top:30px;
+    }
+
+    .recommendation{
+      font-size:20px;
+      font-weight:bold;
+      color:#0A2E52;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Career Assessment Report</h1>
+</header>
+
+<div class="container">
+
+  <div class="card">
+    <h2 id="studentName"></h2>
+
+    <h3>Personality Scores</h3>
+
+    <p>Creativity</p>
+    <div class="progress">
+      <div id="creativityBar" class="fill"></div>
+    </div>
+
+    <p>Leadership</p>
+    <div class="progress">
+      <div id="leadershipBar" class="fill"></div>
+    </div>
+
+    <p>Structured Planning</p>
+    <div class="progress">
+      <div id="structuredBar" class="fill"></div>
+    </div>
+
+    <h2>Top Career Recommendation</h2>
+    <p id="recommendation" class="recommendation"></p>
+
+  </div>
+
+</div>
+
+<script>
+
+var student = localStorage.getItem("student");
+var creativity = localStorage.getItem("creativity");
+var leadership = localStorage.getItem("leadership");
+var structured = localStorage.getItem("structured");
+
+document.getElementById("studentName").innerText = "Report for: " + student;
+
+document.getElementById("creativityBar").style.width = creativity + "%";
+document.getElementById("leadershipBar").style.width = leadership + "%";
+document.getElementById("structuredBar").style.width = structured + "%";
+
+if(creativity > 70){
+    document.getElementById("recommendation").innerText =
+    "🎨 Graphical Designing (Top Choice)";
+}
+else if(leadership > 70){
+    document.getElementById("recommendation").innerText =
+    "📊 Marketing & Business Management (Top Choice)";
+}
+else{
+    document.getElementById("recommendation").innerText =
+    "📘 Explore Multiple Career Paths";
+}
+
+</script>
+
+</body>
+</html>
